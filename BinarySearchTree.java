@@ -6,15 +6,159 @@ public class BinarySearchTree{
  private TreeNode root;
 
 
+
  public static void main(String[] args) {
  	
  	  BinarySearchTree bst = new BinarySearchTree();
 
- 	  int[] preorder =  {2, 4, 3};
+ 	  TreeNode root = new TreeNode(1);
+ 	  root.left = new TreeNode(2);
+ 	  root.right = new TreeNode(3);
 
- 	  System.out.print(bst.verifyPreorderSerilizationOfBinaryTree(preorder));
+ 	  root.left.left = new TreeNode(4);
+ 	  root.left.right = new TreeNode(5);
+
+ 	  System.out.print(bst.findAllRootToLeafPaths(root));
  
  	  
+ }
+
+  
+ 
+  /**
+   * Given a Binary Tree . Find the Max Depth of the Binary Tree .
+   */
+  public int maxDepth(TreeNode root){
+
+
+  	  if(root == null) return 0;
+
+  	  int left = maxDepth(root.left);
+  	  int right = maxDepth(root.right);
+
+  	  return 1 + Math.max(left,right);
+  }
+  
+  /**
+   * Given a Bianry Tree . Find all the paths from root to the leaves.
+   * Appraoch - Backtracking 
+   */
+  public List<List<Integer>> findAllRootToLeafPaths(TreeNode root){
+
+  	  List<List<Integer>> result = new ArrayList<>();
+  	  List<Integer> current = new ArrayList<>();
+
+  	  findAllRootToLeafPathsHelper(root,result,current);
+  	  return result;
+  }
+
+  private void findAllRootToLeafPathsHelper(TreeNode root,List<List<Integer>> result,List<Integer> current){
+
+  	   if(root == null) return;
+
+  	   current.add(root.key);
+
+  	   if(root.left == null && root.right == null){
+
+  	   	  result.add(new ArrayList<>(current));
+  	   	  current.remove(current.size()-1);
+  	   	  return;
+  	   }else{
+
+  	   	  findAllRootToLeafPathsHelper(root.left,result,current);
+  	   	  findAllRootToLeafPathsHelper(root.right,result,current);
+  	   }
+
+  	   current.remove(current.size()-1);
+
+
+  }
+
+  private int goal;
+  double min = Double.MAX_VALUE;
+  /**
+   *  Given a Binary Search Tree  and target value . Find the key in BST whihc is closest to target 
+   */
+  public int closestKeyInBst(TreeNode root,int target){         
+        
+        closestKeyInBstHelper(root,target);
+        return goal;
+
+  }
+
+  private void closestKeyInBstHelper(TreeNode root,int target){
+
+      if(root == null) return;
+
+      if(Math.abs(root.key - target) < min){
+
+      	  min = Math.abs(root.key - target);
+      	  goal = root.key;
+      }
+
+      if(target < root.key){
+
+      	  closestKeyInBstHelper(root.left,target);
+      }
+      else{
+      
+          closestKeyInBstHelper(root.right,target);
+      }
+  }
+  
+  /**
+   * https://leetcode.com/problems/sum-root-to-leaf-numbers/description/
+   */
+  public int sumNumbers(TreeNode root){
+
+        return sumNumbersHelper(root,0);
+
+  }
+
+  private int sumNumbersHelper(TreeNode root,int sum){
+
+  	  if(root == null) return sum;
+
+  	  if(root.left == null && root.right == null){
+
+  	  	return sum*10+root.key;
+  	  }
+
+  	  return sumNumbersHelper(root.left,root.key+sum*10)+sumNumbersHelper(root.right,root.key+sum*10);
+  }
+
+ /**
+  * Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL. .
+  * https://leetcode.com/problems/populating-next-right-pointers-in-each-node/description/
+  * https://www.geeksforgeeks.org/connect-nodes-level-level-order-traversal/
+  */
+ public void connect(TreeNode root){
+
+    
+       Queue<TreeNode> queue = new LinkedList<>();
+
+       queue.offer(root);
+       queue.offer(null);
+
+       while(!queue.isEmpty()){
+
+       	  TreeNode p = queue.poll();
+       	  if(p != null){
+
+       	  	  p.next = queue.peek();
+
+       	  	  if(p.left != null)queue.offer(p.left); 
+
+       	      if(p.right != null) queue.offer(p.right);
+       	  }
+       	  else if(!queue.isEmpty()){
+
+       	  	  queue.offer(null);
+       	  }
+
+       	  
+
+       }
  }
  
 
@@ -837,6 +981,8 @@ public class BinarySearchTree{
   	  int key;
   	  TreeNode left;
   	  TreeNode right;
+
+  	  TreeNode next;
 
   	  public TreeNode(int key){
 
