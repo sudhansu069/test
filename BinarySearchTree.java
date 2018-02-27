@@ -11,19 +11,176 @@ public class BinarySearchTree{
  	
  	  BinarySearchTree bst = new BinarySearchTree();
 
- 	  TreeNode root = new TreeNode(1);
- 	  root.left = new TreeNode(2);
- 	  root.right = new TreeNode(3);
+ 	   bst.insert(5);
+ 	   bst.insert(3);
+ 	   bst.insert(2);
+ 	   bst.insert(4);
+ 	   bst.insert(8);
+ 	   bst.insert(6);
 
- 	  root.left.left = new TreeNode(4);
- 	  root.left.right = new TreeNode(5);
 
- 	  System.out.print(bst.findAllRootToLeafPaths(root));
+ 	  List<Integer> preorder = bst.serializeBST(bst.root);
+ 	  TreeNode newRoot = bst.deserializeBst(preorder);
+
+ 	 bst.inorderTraversal(newRoot);
  
  	  
  }
 
-  
+   public TreeNode deserializeBst(List<Integer> preorder){
+
+   	    return deserializeBstHelper(preorder,Integer.MIN_VALUE,Integer.MAX_VALUE);
+   }
+
+   private TreeNode deserializeBstHelper(List<Integer> preorder,int min,int max){
+
+
+   	      if(index >= preorder.size()) return null;
+
+   	      TreeNode root = null;
+
+   	      if(preorder.get(index) > min && preorder.get(index) < max){
+
+   	      	  root = new TreeNode(preorder.get(index));
+   	      	  index++;
+   	      	  root.left =  deserializeBstHelper(preorder,min,root.key);
+   	      	  root.right =  deserializeBstHelper(preorder,root.key,max);
+   	      }
+
+   	      return root;
+   }
+   
+   /**
+    * Serilize a BST
+    */
+   public List<Integer>serializeBST(TreeNode root){
+
+
+   	    List<Integer> result = new ArrayList<>();
+   	    serializeBSTHelper(root,result);
+   	    return result;
+
+
+   }
+
+   private void serializeBSTHelper(TreeNode root,List<Integer> result){
+
+      if(root == null) return;
+
+      result.add(root.key);
+      serializeBSTHelper(root.left,result);
+      serializeBSTHelper(root.right,result);
+
+   }
+
+   /**
+    * Given the preorder Traversal of the Binary Tree . Construct the Binary Tree out of it
+    */
+
+   int index  = 0;
+   public TreeNode deserialize(List<Integer> preorder){
+
+       if(index == preorder.size() || preorder.get(index) == Integer.MIN_VALUE){
+
+       	   index++;
+       	   return null;
+       }
+
+       TreeNode root = new TreeNode(preorder.get(index));
+       index++;
+
+       root.left = deserialize(preorder);
+       root.right =  deserialize(preorder);
+       return root;
+
+   }
+   
+   /**
+    * Given a Binary Tree . Serilize it.
+    * Approach - Use Preorder Traversal
+    */
+   public List<Integer> serializeBinaryTree(TreeNode root){
+
+
+   	  List<Integer> result = new ArrayList<>();
+   	  serializeBinaryTreeHelper(root,result);
+   	  return result;
+
+   }
+
+   private void serializeBinaryTreeHelper(TreeNode root,List<Integer> result){
+
+   	  if(root == null){
+
+   	  	 result.add(Integer.MIN_VALUE);
+   	  	 return;
+   	  }
+
+   	  result.add(root.key);
+   	  serializeBinaryTreeHelper(root.left,result);
+   	  serializeBinaryTreeHelper(root.right,result);
+
+   }
+
+   /**
+    * Given two Binary Tree . Check if they are same tree
+    */
+   public boolean isSameTree(TreeNode root1,TreeNode root2){
+
+   	  if(root1 == null && root2 == null) return true;
+
+   	  if(root1 == null || root2 == null) return false;
+
+   	  if(root1.key == root2.key){
+
+         return isSameTree(root1.left,root2.left) && isSameTree(root1.right,root2.right);
+   	  }else{
+
+   	  	return false;
+   	  }
+   }
+
+   private TreeNode firstElement = null;
+   private TreeNode secondElement = null;
+   private TreeNode prev = new TreeNode(Integer.MIN_VALUE);
+   /**
+    * https://leetcode.com/problems/recover-binary-search-tree/discuss/32535/No-Fancy-Algorithm-just-Simple-and-Powerful-In-Order-Traversal
+    */
+   public void recoverBinarySearchTree(TreeNode root){
+
+       traverse(root);
+
+       if(firstElement != null && secondElement != null){
+
+       	  int temp = firstElement.key;
+       	  firstElement.key = secondElement.key;
+       	  secondElement.key = temp;
+       }
+
+   }
+
+   private void traverse(TreeNode root){
+
+   	  if(root == null) return ;
+
+   	  traverse(root.left);
+
+      if(firstElement == null && prev.key >= root.key){
+
+      	firstElement =  prev;
+      }
+
+      if(firstElement != null && prev.key >= root.key){
+
+      	 secondElement = root;
+      }
+
+      prev = root;
+      
+   	  traverse(root.right);
+
+
+   }
  
   /**
    * Given a Binary Tree . Find the Max Depth of the Binary Tree .
