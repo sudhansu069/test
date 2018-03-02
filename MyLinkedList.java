@@ -8,38 +8,54 @@ public class MyLinkedList{
 
 
 		MyLinkedList list1 = new MyLinkedList();
-		MyLinkedList list2 = new MyLinkedList();
-		MyLinkedList list3 = new MyLinkedList();
 		 
+		 
+
+        list1.insertAtEnd(7);
+        list1.insertAtEnd(8);
+        list1.insertAtEnd(9);
+        list1.insertAtEnd(10);
+
         list1.insertAtEnd(1);
         list1.insertAtEnd(2);
         list1.insertAtEnd(5);
         list1.insertAtEnd(6);
 
 
-        list2.insertAtEnd(3);
-        list3.insertAtEnd(4);
-        
-        list3.insertAtEnd(7);
-        list3.insertAtEnd(8);
-        list3.insertAtEnd(9);
-        list3.insertAtEnd(10);
-
-        ListNode[] lists = new ListNode[3];
-
-        lists[0] = list1.head;
-        lists[1] = list2.head;
-        lists[2] = list3.head;
-
-         
+        list1.insertAtEnd(3);
+        list1.insertAtEnd(4);  
         
         
-        ListNode node = list1.mergeKSortedList(lists); 
+        ListNode node = list1.sortList(list1.head); 
         
         list1.displayList(node);
 
 
 
+	}
+
+	public ListNode sortList(ListNode head){
+
+		 if(head == null || head.next == null) return head;
+
+		 ListNode prev = null;
+		 ListNode slow = head;
+		 ListNode fast = head;
+
+		 while(fast != null && fast.next != null){
+
+		 	 prev = slow;
+		 	 slow = slow.next;
+		 	 fast = fast.next.next;
+		 }
+
+		 prev.next = null;
+
+		 ListNode l1 = sortList(head);
+		 ListNode l2 = sortList(slow);
+
+		 ListNode result = mergeSortedLists(l1,l2);
+		 return result;
 	}
 
 	public ListNode mergeKSortedList(ListNode[] lists){
