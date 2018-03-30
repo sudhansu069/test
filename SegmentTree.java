@@ -24,7 +24,7 @@ public class SegmentTree{
          
             if(low == high){
 
-            	 TreeNode temp = new TreeNode(arr[low],low);
+            	 TreeNode temp = new TreeNode(arr[low],low,high);
             	 return temp;
             }
 
@@ -53,20 +53,20 @@ public class SegmentTree{
     }
 
 
-  public void update(TreeNode root,int ind,int diff){
+  public void update(TreeNode root,int index,int diff){
 
 	if(root == null)
 	  return ;
 
-	if(ind < root.low || ind > root.high)
+	if(index < root.low || index > root.high)
 	   return ;
  
-	else if(ind >= root.low && ind <= root.high)
+	else if(index >= root.low && index <= root.high)
 	{
 		root.val += diff;
 	}
-	update(root.left,ind,diff);
-	update(root.right,ind,diff);
+	update(root.left,index,diff);
+	update(root.right,index,diff);
 }
 
     static class TreeNode{
@@ -81,11 +81,11 @@ public class SegmentTree{
 
     	 }
 
-    	 public TreeNode(int x,int index){
+    	 public TreeNode(int x,int low,int high){
 
              val = x ;
-             low = index;
-             high = index;
+             this.low = low;
+             this.high = high;
     	 }
 
 

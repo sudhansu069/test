@@ -1,30 +1,29 @@
 public class CloneGraph{
 
 
-	public UndirectedGraphNode cloneGraph(UndirectedGraphNode node){
+	public Node cloneGraph(Node node){
 
 		 if(node == null)return null;
 
-		 Queue<UndirectedGraphNode> queue = new LinkedList<UndirectedGraphNode>();
-		 HashMap<UndirectedGraphNode, UndirectedGraphNode> map = 
-                                   new HashMap<UndirectedGraphNode,UndirectedGraphNode>();
+		 Queue<Node> queue = new LinkedList<Node>();
+		 HashMap<Node, Node> map = new HashMap<Node,Node>();
 
-         UndirectedGraphNode newHead = new UndirectedGraphNode(node.label);
+         Node newHead = new Node(node.label);
 
          queue.add(node);
          map.put(node, newHead);
 
          while(!queue.isEmpty()){
 
-         	 UndirectedGraphNode curr = queue.poll();
-         	 ArrayList<UndirectedGraphNode> currNeighbors = curr.neighbors;
+         	 Node curr = queue.poll();
+         	 ArrayList<Node> currNeighbors = curr.neighbors;
 
-         	 for(UndirectedGraphNode aNeighbor: currNeighbors){
+         	 for(Node aNeighbor: currNeighbors){
 
          	 	 if(!map.containsKey(aNeighbor)){
 
 
-         	 	 	 UndirectedGraphNode copy = new UndirectedGraphNode(aNeighbor.label);
+         	 	 	 Node copy = new Node(aNeighbor.label);
 
          	 	 	 map.put(aNeighbor,copy);
          	 	 	 map.get(curr).neighbors.add(copy);
@@ -41,13 +40,13 @@ public class CloneGraph{
          }
 	}
 	
-	 static class UndirectedGraphNode{
+	 static class Node{
 
 	 	  int label;
-	 	  ArrayList<UndirectedGraphNode> neighbors;
+	 	  ArrayList<Node> neighbors;
           public UndirectedGraphNode(int x) { 
           	label = x; 
-          	neighbors = new ArrayList<UndirectedGraphNode>(); 
+          	neighbors = new ArrayList<Node>(); 
           }
 
 	 }

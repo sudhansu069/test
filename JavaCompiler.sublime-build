@@ -1,0 +1,25 @@
+
+{
+    "cmd": ["javac", "-Xlint", "$file"],
+    "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+    "selector": "source.java",
+    "cmd": ["java", "$file_base_name"],
+    "quiet":true,
+ 
+    "variants": [
+        {
+            "cmd": ["javac", "-Xlint", "$file"],
+            "file_regex": "^(...*?):([0-9]*):?([0-9]*)",
+            "selector": "source.java",
+            "name": "Compile Java"
+        },
+        {
+            "cmd": ["java", "$file_base_name"],
+            "name": "Run Java"
+        }
+    ]
+    
+}
+
+// Go To Tools and save as myjavaCompile.sublime-build in C:\Users\Dell\AppData\Roaming\Sublime Text 3\Packages\User
+// press cntrl+shift+B to compile and run

@@ -511,22 +511,22 @@ public class MyLinkedList{
         	 p = p.next.next;
         }
 
-    p = head;
-	ListNode pseudoHead = new ListNode(0);
-	ListNode copy, copyIter = pseudoHead;
+	    p = head;
+		ListNode pseudoHead = new ListNode(0);
+		ListNode copy, copyIter = pseudoHead;
 
-	while (p != null) {
-		ListNode next  = p.next.next;
+		while (p != null) {
+			ListNode next  = p.next.next;
 
-		copy = p.next;
-		copyIter.next = copy;
-		copyIter = copy;
+			copy = p.next;
+			copyIter.next = copy;
+			copyIter = copy;
 
-		// restore the original list
-		p.next = next;
+			// restore the original list
+			p.next = next;
 
-		p = next;
-	}
+			p = next;
+		}
 
 	return pseudoHead.next;
 
