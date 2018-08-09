@@ -11,28 +11,61 @@ public class MyLinkedList{
 		 
 		 
 
-        list1.insertAtEnd(7);
-        list1.insertAtEnd(8);
-        list1.insertAtEnd(9);
-        list1.insertAtEnd(10);
-
         list1.insertAtEnd(1);
-        list1.insertAtEnd(2);
-        list1.insertAtEnd(5);
         list1.insertAtEnd(6);
-
-
-        list1.insertAtEnd(3);
-        list1.insertAtEnd(4);  
-        
-        
-        ListNode node = list1.sortList(list1.head); 
+        list1.insertAtEnd(9);
+       
+        ListNode node = list1.addOneToList(list1.head); 
         
         list1.displayList(node);
 
 
 
 	}
+
+	public ListNode addOneToList(ListNode head){
+
+		int carry =  addWithcarry(head);
+		if(carry>0){
+			ListNode newNode = new ListNode(carry);
+			newNode.next= head;
+			head = newNode;
+		}
+		return head;
+	}
+
+	private int addWithcarry(ListNode head){
+		if(head == null) return 1;
+
+		int result = head.key+addWithcarry(head.next);
+
+		head.key  = result%10;
+		return result/10;
+	}
+
+	public ListNode removeNthFromEnd(ListNode head, int n) {
+        
+        ListNode dummy = new ListNode(0);
+        dummy.next  = head;
+        
+        ListNode slow = dummy;
+        ListNode fast = dummy;
+        
+        for(int i = 1;i<= n+1;i++){
+            
+            fast = fast.next;
+        }
+        
+        while(fast != null){
+            slow = slow.next;
+            fast =  fast.next;
+        }
+        
+        slow.next = slow.next.next;
+        
+        return dummy.next;
+        
+    }
 
 	public ListNode sortList(ListNode head){
 
@@ -240,14 +273,12 @@ public class MyLinkedList{
 
           if(head == null || head.next == null) return head;
 
-          ListNode nextHead = head.next.next;
+          ListNode remaining = head.next.next;
 
-          ListNode next = head.next;
-          ListNode current = head;
-
-          next.next = current;
-          current.next = swapNodesInPair(nextHead);
-          return next;
+          ListNode newHead = head.next;
+          newHead.next = head;
+          head.next = swapNodesInPair(remaining);
+          return newHead;
 	}
     /**
     *  Given a Linked List and a key . Delete all the occurances of the key
